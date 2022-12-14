@@ -1,16 +1,24 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        n = len(s)
+        res = ""
+        resLen = 0
 
-        if n < 2: return s
+        for i in range(len(s)):
+            #odd length
+            l,r = i,i
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if(r-l+1) > resLen:
+                    res = s[l:r+1]
+                    resLen = r-l+1
+                l -= 1
+                r += 1
 
-        dp, ans = [[0]*n for _ in range(n)], {}
-
-        for  i in range(n-1,-1,-1):
-            for j in range(i,n):
-                if s[i] == s[j] and ((j - i + 1) <= 3 or dp[i + 1][j - 1]):
-                    dp[i][j] = True
-                    ans[j-i+1] = s[i:j+1]
-                else:
-                    dp[i][j] == False
-        return ans[max(ans)]
+            #even length
+            l,r = i,i+1
+            while l >= 0 and r < len(s) and s[l] == s[r]:
+                if (r-l+1) > resLen:
+                    res = s[l:r+1]
+                    resLen = r - l + 1
+                l-=1
+                r+=1
+        return res
